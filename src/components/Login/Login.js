@@ -13,7 +13,11 @@ function Login() {
     },
     onSubmit: values => {
       alert(JSON.stringify(values));
-      fetch('http://localhost:4242/api/login', { method: 'POST', body: JSON.stringify({ email: values.email, password: values.password }) } )
+      fetch('http://localhost:4242/api/login', { 
+          method: 'POST', 
+          headers: {'Content-Type': 'application/json'}, 
+          body: JSON.stringify({ email: values.email, password: values.password }) 
+        } )
         .then(response => response.json())
         .then(data => alert(data.token) ) ;
     },
