@@ -18,8 +18,10 @@ function Login() {
           headers: {'Content-Type': 'application/json'}, 
           body: JSON.stringify({ email: values.email, password: values.password }) 
         } )
-        .then(response => response.json())
-        .then(data => alert(data.token) ) ;
+        .then(response => {
+          if(response.status === 400)
+          return response.json()
+        })
     },
   });
 
