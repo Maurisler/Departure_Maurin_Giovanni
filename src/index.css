@@ -23,3 +23,12 @@ code {
   justify-content: center;
   align-content: center;
 }
+
+button{
+  background-color: black !important;
+  border-color: black !important;
+}
+
+.field{
+  background-color: lightgray !important;
+}

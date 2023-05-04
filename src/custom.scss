@@ -1,8 +1,9 @@
-@import '~bootstrap/scss/bootstrap.scss';
-
 // change the theme
-$theme-colors: (
-  "primary": #d9a600,
-  "danger": #ff4136
-);
+$primary: #23ab17;
+$danger: #4eff36;
+$secondary: #308f25;
+$success: #30880d;
+$info: #80b40f;
+$warning: #9b2377;
 
+@import '~bootstrap/scss/bootstrap';
