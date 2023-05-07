@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './custom.scss';
 import './index.css';
 import Login from './components/Login/Login';
+import Main from './components/Main/Main';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Login />
+    <Main />
   </React.StrictMode>
 );
 

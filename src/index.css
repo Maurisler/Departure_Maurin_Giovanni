@@ -24,7 +24,15 @@ code {
   align-content: center;
 }
 
-button{
+#main-top{
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 8em;
+  background-color: lightgray;
+}
+
+.login-buttons{
   background-color: black !important;
   border-color: black !important;
 }
