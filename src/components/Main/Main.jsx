@@ -2,6 +2,7 @@ import './Main.test';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import { Link } from "react-router-dom";
 import { useFormik } from 'formik';
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -19,29 +20,31 @@ function Main() {
   const fromRef = useRef(null);
   const toRef = useRef(null);
 
-  useEffect(() => {getConnections()},[])
+  let token = useRef()
+
+
+  useEffect(() => {
+    token.current = window.sessionStorage.getItem("token");
+    getConnections(); 
+  },[])
 
   function setVal(ref, value, response){
 
   }
 
   async function deleteConnection(id){
-    //let token = sessionStorage.getItem("token")
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODM1MzQ0NzIsImV4cCI6MTY4MzU0MTY3Mn0.66Jp4LNVbdDMfsxQnUTIdJYjiwH6Ntm6c01wRvAWvr8";
     fetch('http://localhost:4242/api/connections/' + id, { 
         method: 'DELETE', 
-        headers: {'x-access-token': token}, 
+        headers: {'x-access-token': token.current}, 
     }).then(() =>{
       getConnections()
     });
   }
 
   async function getConnections(){
-   //let token = sessionStorage.getItem("token")
-   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODM1MzQ0NzIsImV4cCI6MTY4MzU0MTY3Mn0.66Jp4LNVbdDMfsxQnUTIdJYjiwH6Ntm6c01wRvAWvr8";
    fetch('http://localhost:4242/api/connections', { 
       method: 'GET', 
-      headers: {'x-access-token': token}, 
+      headers: {'x-access-token': token.current}, 
    }).then(response =>{
     if(response.ok){
       response.json().then(d => {
@@ -54,26 +57,23 @@ function Main() {
   }
   
   async function submitConection(){
-    //let token = sessionStorage.getItem("token")
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODM1MzQ0NzIsImV4cCI6MTY4MzU0MTY3Mn0.66Jp4LNVbdDMfsxQnUTIdJYjiwH6Ntm6c01wRvAWvr8";
     fetch('http://localhost:4242/api/connections', { 
       method: 'POST', 
-      headers: {'Content-Type': 'application/json', 'x-access-token': token}, 
+      headers: {'Content-Type': 'application/json', 'x-access-token': token.current}, 
       body: JSON.stringify({ from: from, to: to }) 
     });
     getConnections();
   }
 
 
-  function swapVal(){
+  async function swapVal(){
+    await fromSearch.handleSubmit();
+    await toSearch.handleSubmit();
     let temp = from;
     setFrom(to)
     setTo(temp)
-    try{
-      fromRef.current.value = from;
-      toRef.current.value = to;
-    }catch(e){
-    }
+    fromRef.current.value = temp;
+    toRef.current.value = to;
   }
 
   const fromSearch = useFormik({
@@ -164,17 +164,18 @@ function Main() {
         <Button variant="secondary" onClick={submitConection}>Hinzufügen</Button>
       </div>
       <h4>Gespeicherte Verbindungen:</h4>
-      <ul>
         {
           connections.map(connection => (
             <Card>
               <p><b>Von:</b> {connection.from}</p>
               <p><b>Zu:</b> {connection.to}</p>
               <Button variant='danger' onClick={() => deleteConnection(connection.id)}>Entfernen</Button>
+              <Link to={`/connection/` + connection.id}>
+                <Button variant='primary'>Anschauen</Button>
+              </Link>
             </Card>
           ))
         }
-      </ul>
     </>
   );
 }
