@@ -1,22 +1,22 @@
 
 
-#Projektstruktur:
+# Projektstruktur:
 
-- public
+-- public
 
-- src
+-- src
 
--- ㅤ__tests__
+--- ㅤ__tests__
 
--- components
+--- components
 
----- Login
+----- Login
 
----- Main
+----- Main
 
---- Connection
+---- Connection
 
--- resources
+--- resources
 
 Im components Ordner sind die Komponenten der App, für jede Seite eine.
 Im __tests__ Ordner sind Tests für die Komponenten.
@@ -29,3 +29,5 @@ npm start
 
 Test starten:
 npm test
+
+Gür das linting sind die Default-Einstellungen eingesetzt worden.
