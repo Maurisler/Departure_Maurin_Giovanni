@@ -19,12 +19,38 @@ function Main() {
   const fromRef = useRef(null);
   const toRef = useRef(null);
 
+  useEffect(() => {getConnections()},[])
+
   function setVal(ref, value, response){
- 
+
   }
 
-  function getConncections(){
+  async function deleteConnection(id){
+    //let token = sessionStorage.getItem("token")
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODM1MzQ0NzIsImV4cCI6MTY4MzU0MTY3Mn0.66Jp4LNVbdDMfsxQnUTIdJYjiwH6Ntm6c01wRvAWvr8";
+    fetch('http://localhost:4242/api/connections/' + id, { 
+        method: 'DELETE', 
+        headers: {'x-access-token': token}, 
+    }).then(() =>{
+      getConnections()
+    });
+  }
 
+  async function getConnections(){
+   //let token = sessionStorage.getItem("token")
+   let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODM1MzQ0NzIsImV4cCI6MTY4MzU0MTY3Mn0.66Jp4LNVbdDMfsxQnUTIdJYjiwH6Ntm6c01wRvAWvr8";
+   fetch('http://localhost:4242/api/connections', { 
+      method: 'GET', 
+      headers: {'x-access-token': token}, 
+   }).then(response =>{
+    if(response.ok){
+      response.json().then(d => {
+        setConnections(d)
+      });
+    }else{
+      alert("Error")
+    }
+   });
   }
   
   async function submitConection(){
@@ -35,6 +61,7 @@ function Main() {
       headers: {'Content-Type': 'application/json', 'x-access-token': token}, 
       body: JSON.stringify({ from: from, to: to }) 
     });
+    getConnections();
   }
 
 
@@ -58,18 +85,18 @@ function Main() {
           method: 'GET', 
         } )
         .then(response => {
-          response.json().then(d => {
-            if(response.ok){
+          if(response.ok){
+            response.json().then(d => {
               try{
                 setFrom(fromRef.current.value = d.stations[0].name);
               }catch(error){
                 alert("Error")
-              }
-            }else{
-              alert("Error")
-            }
-          });
-        })
+              }      
+            });
+          }else{
+            alert("Error")
+          }
+      })
     },
   });
   
@@ -136,6 +163,17 @@ function Main() {
         </div>
         <Button variant="secondary" onClick={submitConection}>Hinzufügen</Button>
       </div>
+      <ul>
+        {
+          connections.map(connection => (
+            <Card>
+              <p><b>Von:</b> {connection.from}</p>
+              <p><b>Zu:</b> {connection.to}</p>
+              <Button variant='danger' onClick={() => deleteConnection(connection.id)}>Entfernen</Button>
+            </Card>
+          ))
+        }
+      </ul>
     </>
   );
 }
