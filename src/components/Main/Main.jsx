@@ -50,7 +50,7 @@ function Main() {
         setConnections(d)
       });
     }else{
-      //TODO:ERROR
+      navigate("/");
     }
    });
   }
@@ -89,11 +89,11 @@ function Main() {
               try{
                 setFrom(fromRef.current.value = d.stations[0].name);
               }catch(error){
-                //TODO:ERROR
+                navigate("/");
               }      
             });
           }else{
-            //TODO:ERROR
+            navigate("/");
           }
       })
     },
@@ -113,10 +113,10 @@ function Main() {
               try{
                 setTo(toRef.current.value = d.stations[0].name);
               }catch(error){
-                //TODO:ERROR
+                navigate("/");
               }
             }else{
-              //TODO:ERROR
+              navigate("/");
             }
           });
         })
@@ -164,7 +164,7 @@ function Main() {
               <p><b>{t("to")}:</b> {connection.to}</p>
               <Button className='buttons-main' variant='danger' onClick={() => deleteConnection(connection.id)}>{t("delete")}</Button>
               <Link to={`/connection/` + connection.id}>
-                <Button className='buttons-main' variant='primary'>{t("view")}</Button>
+                <Button className='buttons-main' variant='info'>{t("view")}</Button>
               </Link>
             </Card>
           ))

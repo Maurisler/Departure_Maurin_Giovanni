@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, act } from '@testing-library/react';
 import Login from '../components/Login/Login';
 import { Alert } from 'bootstrap';
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,8 @@ const translate = () => Component => props => <Component t={() => ''} {...props}
 react_i18next.translate = translate
 module.exports = react_i18next
 
+window.alert = jest.fn();
+
 test("renders the component", () => {
   render(
       <Login />
@@ -25,6 +27,7 @@ test("renders the component", () => {
 });
 
 test("Fail login", async () => {
+    window.alert.mockClear();
     const history = createMemoryHistory();
     history.push = jest.fn();
 

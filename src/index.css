@@ -34,13 +34,14 @@ code {
 }
 
 #connection-page{
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
 }
 
 #loading-element{
+  margin-top: 20em;
   scale: 5;
   justify-self: center;
   align-self: center;

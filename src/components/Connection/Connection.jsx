@@ -3,10 +3,11 @@ import { useNavigate ,useParams } from "react-router-dom";
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 function Connection() {
   const { t } = useTranslation();
-  const [spinner, setSpinner] = useState(false); 
+  const [spinnerGone, setSpinnerGone] = useState(false); 
   let navigate = useNavigate();
   const connectionId = useParams().connectionId;
   let from;
@@ -30,6 +31,15 @@ function Connection() {
     return () => clearInterval(interval);
   }, [])
 
+  function isNotToday(timestampString) {
+    const timestamp = new Date(timestampString);
+    const today = new Date();
+    return (
+      timestamp.getFullYear() !== today.getFullYear() ||
+      timestamp.getMonth() !== today.getMonth() ||
+      timestamp.getDate() !== today.getDate()
+    );
+  }
 
   async function getUserConnection(connectionId){
    fetch('http://localhost:4242/api/connections', { 
@@ -63,7 +73,7 @@ function Connection() {
         method: 'GET'
     }).then(response =>{
       if(response.ok){
-        setSpinner(true)
+        setSpinnerGone(true)
         response.json().then(d => {
           setConnections(d.connections)
         });
@@ -117,26 +127,31 @@ function Connection() {
   
   //TODO: Insert translation
   return (
-    <div id='connection-page'>
-      {
-        spinner ?
-        (
-        //TODO: if first connection is tommorow, mark as next day only
-        connections.map(connection => (
-            <Card>
-              <p><b>{t("from")}:</b> {connection.from.station.name}</p>
-              <p><b>{t("to")}:</b> {connection.to.station.name}</p>
-              <p><b>{t("departs_in")}:</b> {getTimeDifference(connection.from.departure)}</p>
-              <p><b>{t("delay")}:</b> {connection.from.delay == null ? t("unknown") : (connection.from.delay + t("minute") + t("multiple_minute_end"))}</p>
-              <p><b>{t("status")}:</b> {getTimeDifference(connection.from.departure) === t("missed_train") ? t("missed") : t("available")}</p>
-              <p><b>{t("duration")}:</b> {connection.to.platform}</p>
-            </Card>
-        ))
-        )
-        :
-        <Spinner animation="border" variant="primary" id='loading-element'/>
-      }
-    </div>
+    <>
+    <Link to={`/home`}><h5>Go back</h5></Link>
+    {(isNotToday(connections[0]?.from.departure) && spinnerGone ? 
+            (<h4><b>Note: </b>None of those connections depart today!</h4>) : (<></>)
+    )}
+      <div id='connection-page'>
+        {
+          spinnerGone ?
+          (
+          //TODO: if first connection is tommorow, mark as next day only
+          connections.map(connection => (
+              <Card>
+                <p><b>{t("from")}:</b> {connection.from.station.name}</p>
+                <p><b>{t("to")}:</b> {connection.to.station.name}</p>
+                <p><b>{t("departs_in")}:</b> {getTimeDifference(connection.from.departure)}</p>
+                <p><b>{t("delay")}:</b> {connection.from.delay == null ? t("unknown") : (connection.from.delay + t("minute") + t("multiple_minute_end"))}</p>
+                <p><b>{t("status")}:</b> {getTimeDifference(connection.from.departure) === t("missed_train") ? t("missed") : t("available")}</p>
+              </Card>
+          ))
+          )
+          :
+          <Spinner animation="border" variant="primary" id='loading-element'/>
+        }
+      </div>
+    </>
   );
 }
 
