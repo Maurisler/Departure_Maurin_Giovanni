@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Connection from './Connection';
+import Main from '../components/Main/Main';
 
 /*test('renders learn react link', () => {
   render(<Login />);

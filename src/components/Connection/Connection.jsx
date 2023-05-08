@@ -1,4 +1,3 @@
-import './Connection.test';
 import Card from 'react-bootstrap/Card';
 import { useNavigate ,useParams } from "react-router-dom";
 import React, { useState, useEffect, useRef } from 'react';

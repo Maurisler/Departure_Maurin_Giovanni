@@ -1,4 +1,3 @@
-import './Login.test';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -16,7 +15,8 @@ function Login() {
       password: ''
     },
     onSubmit: values => {
-      fetch('http://localhost:4242/api/login', { 
+      if(values.email !== '' || values.password !== ''){
+        fetch('http://localhost:4242/api/login', { 
           method: 'POST', 
           headers: {'Content-Type': 'application/json'}, 
           body: JSON.stringify({ email: values.email, password: values.password }) 
@@ -31,6 +31,9 @@ function Login() {
             }
           })
         })
+      }else{
+        alert(t("incorrect_email_or_password_try_again"))
+      }
     },
   });
 
@@ -44,6 +47,7 @@ function Login() {
               className='field'
               type="email" 
               name="email" 
+              data-testid='email'
               placeholder={t("placeholder_email")}
               onChange={login.handleChange}
               value={login.values.email}
@@ -56,13 +60,14 @@ function Login() {
               className='field'
               type="password" 
               name="password" 
+              data-testid='password'
               placeholder={t("placeholder_password")}
               onChange={login.handleChange}
               value={login.values.password}
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" data-testid='submit'>
             {t("login")}
           </Button>
 
