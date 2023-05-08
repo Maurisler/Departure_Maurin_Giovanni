@@ -4,10 +4,11 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
-import i18next from 'i18next';
+import { useTranslation } from "react-i18next";
 
 function Login() {
   let navigate = useNavigate();
+  const { t } = useTranslation();
 
   const login = useFormik({
     initialValues: {
@@ -26,7 +27,7 @@ function Login() {
               window.sessionStorage.setItem("token", data.token);
               navigate("/home")
             }else{
-              alert("The email or password is incorrect! Try again.")
+              alert(t("incorrect_email_or_password_try_again"))
             }
           })
         })
@@ -38,31 +39,31 @@ function Login() {
       <Card style={{padding: "2em", width: "25em", }} id = "login-card" className = "my-auto">
         <Form onSubmit={login.handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>{t("email_adress")}</Form.Label>
             <Form.Control 
               className='field'
               type="email" 
               name="email" 
-              placeholder="Enter email"
+              placeholder={t("placeholder_email")}
               onChange={login.handleChange}
               value={login.values.email}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>{t("password")}</Form.Label>
             <Form.Control 
               className='field'
               type="password" 
               name="password" 
-              placeholder="Password"
+              placeholder={t("placeholder_password")}
               onChange={login.handleChange}
               value={login.values.password}
             />
           </Form.Group>
 
           <Button variant="primary" type="submit">
-            Submit
+            {t("login")}
           </Button>
 
         </Form>

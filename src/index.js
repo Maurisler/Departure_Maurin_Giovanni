@@ -5,6 +5,8 @@ import {
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
+//The following import get marked as unused despite beeing important. Ignore the warning.
+import { i18n } from './services/i18n';
 import './custom.scss';
 import './index.css';
 import Login from './components/Login/Login';

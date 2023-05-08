@@ -3,10 +3,10 @@ import Card from 'react-bootstrap/Card';
 import { useNavigate ,useParams } from "react-router-dom";
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-
-
+import { useTranslation } from "react-i18next";
 
 function Connection() {
+  const { t } = useTranslation();
   const [spinner, setSpinner] = useState(false); 
   let navigate = useNavigate();
   const connectionId = useParams().connectionId;
@@ -28,7 +28,7 @@ function Connection() {
       getUserConnection(connectionId);
     }, 60000);
   
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    return () => clearInterval(interval);
   }, [])
 
 
@@ -86,31 +86,31 @@ function Connection() {
     let timeDiffString = '';
   
     if (currentTime < targetTime) {
-      timeDiffString = getTimeDescGerman(timeDifference, minute, hour, day)
+      timeDiffString = getTimeDesc(timeDifference, minute, hour, day)
 
     } else {
-      timeDiffString = 'Der Zug ist abgefahren';
+      timeDiffString = t("missed_train");
     }
   
     return timeDiffString;
   }
   
-  function getTimeDescGerman(time,minute, hour, day){
+  function getTimeDesc(time,minute, hour, day){
     let timeString = ""
     const days = Math.floor(time / day);
     const hours = Math.floor((time % day) / hour);
     const minutes = Math.floor((time % hour) / minute);
 
     if (days> 0) {
-      timeString += `${days} Tag${days > 1 ? 'e' : ''}, `;
+      timeString += `${days} ${t("day")}${days > 1 ? t("multiple_day_end")  : ''}, `;
     }
     if (hours > 0) {
-      timeString += `${hours} Stunde${hours > 1 ? 'n' : ''}, `;
+      timeString += `${hours} ${t("hour")}${hours > 1 ? t("multiple_hour_end") : ''}, `;
     }
     if (minutes === 1) {
-      timeString += `1 Minute`;
+      timeString += `1 ` + t("minute");
     } else if (minutes > 1 || time === '') {
-      timeString += `${minutes} Minuten`;
+      timeString += `${minutes} ${t("minute")}${t("multiple_minute_end")}`;
     }
 
     return timeString
@@ -125,12 +125,12 @@ function Connection() {
         //TODO: if first connection is tommorow, mark as next day only
         connections.map(connection => (
             <Card>
-              <p><b>Von:</b> {connection.from.station.name}</p>
-              <p><b>Zu:</b> {connection.to.station.name}</p>
-              <p><b>Abfahrt in:</b> {getTimeDifference(connection.from.departure)}</p>
-              <p><b>Verspätung:</b> {connection.from.delay == null ? "Nicht bekannt" : (connection.from.delay + 'Minuten')}</p>
-              <p><b>Status:</b> {getTimeDifference(connection.from.departure) === "Der Zug ist abgefahren" ? "Abgefahren" : "Verfügbar"}</p>
-              <p><b>Dauer:</b> {connection.to.platform}</p>
+              <p><b>{t("from")}:</b> {connection.from.station.name}</p>
+              <p><b>{t("to")}:</b> {connection.to.station.name}</p>
+              <p><b>{t("departs_in")}:</b> {getTimeDifference(connection.from.departure)}</p>
+              <p><b>{t("delay")}:</b> {connection.from.delay == null ? t("unknown") : (connection.from.delay + t("minute") + t("multiple_minute_end"))}</p>
+              <p><b>{t("status")}:</b> {getTimeDifference(connection.from.departure) === t("missed_train") ? t("missed") : t("available")}</p>
+              <p><b>{t("duration")}:</b> {connection.to.platform}</p>
             </Card>
         ))
         )

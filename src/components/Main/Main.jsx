@@ -5,13 +5,13 @@ import Form from 'react-bootstrap/Form';
 import { Link,useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import React, { useState, useEffect, useRef } from 'react';
-
-
+import { useTranslation } from "react-i18next";
 
 function Main() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [connections, setConnections] = useState([]);
+  const { t } = useTranslation();
 
   const fromRef = useRef(null);
   const toRef = useRef(null);
@@ -130,7 +130,7 @@ function Main() {
       <div id="main-top">
         <div>
           <Form >
-              <Form.Label htmlFor="from">Abfahrt:</Form.Label> 
+              <Form.Label htmlFor="from">{t("depart")}:</Form.Label> 
               <Form.Control
                 onBlur={fromSearch.handleSubmit}
                 type="text"
@@ -144,7 +144,7 @@ function Main() {
         <Button variant="secondary" onClick={swapVal}>⇄</Button>
         <div>
           <Form >
-            <Form.Label htmlFor="to">Ziel:</Form.Label>
+            <Form.Label htmlFor="to">{t("arrival")}:</Form.Label>
             <Form.Control
               onBlur={toSearch.handleSubmit}
               type="text"
@@ -155,17 +155,17 @@ function Main() {
             />
           </Form>
         </div>
-        <Button variant="secondary" onClick={submitConection}>Hinzufügen</Button>
+        <Button variant="secondary" onClick={submitConection}>{t("add")}</Button>
       </div>
-      <h4>Verbindungen:</h4>
+      <h4>{t("saved_connections")}:</h4>
         {
           connections.map(connection => (
             <Card>
-              <p><b>Von:</b> {connection.from}</p>
-              <p><b>Zu:</b> {connection.to}</p>
-              <Button variant='danger' onClick={() => deleteConnection(connection.id)}>Entfernen</Button>
+              <p><b>{t("from")}:</b> {connection.from}</p>
+              <p><b>{t("to")}:</b> {connection.to}</p>
+              <Button variant='danger' onClick={() => deleteConnection(connection.id)}>{t("delete")}</Button>
               <Link to={`/connection/` + connection.id}>
-                <Button variant='primary'>Anschauen</Button>
+                <Button variant='primary'>{t("view")}</Button>
               </Link>
             </Card>
           ))

@@ -12,24 +12,49 @@ const resources = {
 
     translation: {
 
-      email_adress: "E-Mail Adress",
-      password: "Passwort",
-      login: "Einloggen",
+        incorrect_email_or_password_try_again: "Die E-Mail oder das Password ist inkorrekt, versuche es nochmal!",
 
-      depart: "Abfahrtsort",
-      arrival: "Ankunftsort",
-      add: "Hinzufügen",
-      delete: "Entfernen",
-      view: "Anschauen",
+        placeholder_email: "E-Mail eingeben",
+        placeholder_password: "Passwort eingeben",
 
-      from: "Von",
-      to: "Zu",
+        email_adress: "E-Mail Adresse",
+        password: "Passwort",
+        login: "Einloggen",
 
-      error_title: "Seite nicht Gefunden!",
-      go_back: "Zurück zum Start",
+        saved_connections: "Gespeicherte Verbindungen",
 
-      day: "Tag",
-      multiple_day_end:"e"
+        depart: "Abfahrtsort",
+        arrival: "Ankunftsort",
+        add: "Hinzufügen",
+        delete: "Entfernen",
+        view: "Anschauen",
+
+        from: "Von",
+        to: "Zu",
+
+        error_title: "Seite nicht Gefunden!",
+        go_back: "Zurück zum Start",
+
+        missed_train: "Der Zug ist abgefahren",
+
+        day: "Tag",
+        multiple_day_end:"e",
+
+        hour: "Stunde",
+        multiple_hour_end: "n",
+
+        unknown: "Nicht bekannt", 
+        
+        minute : "Minute",
+        multiple_minute_end: "n",
+
+        departs_in: "Abfahrt in", 
+        delay: "Verspätung",
+        status: "Status",
+        duration: "Dauer",
+
+        missed: "Abgefahren",
+        available: "Verfügbar"
     },
 
   }
@@ -44,7 +69,7 @@ i18next
 
     resources,
 
-    lng: "en",
+    lng: "de",
 
     interpolation: {
 
