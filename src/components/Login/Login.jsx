@@ -2,6 +2,7 @@ import './Login.test';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import {
   createBrowserRouter,
@@ -9,6 +10,7 @@ import {
 } from "react-router-dom";
 
 function Login() {
+  let navigate = useNavigate();
 
   const login = useFormik({
     initialValues: {
@@ -22,13 +24,15 @@ function Login() {
           body: JSON.stringify({ email: values.email, password: values.password }) 
         } )
         .then(response => {
-          let data = response.json();
-          if(response.ok){
-            sessionStorage.setItem("token", data.token);
-            alert("Sucess!") //TODO: Delete this
-          }else{
-            alert("The email or password is incorrect! Try again.")
-          }
+          response.json().then(data => {
+            if(response.ok){
+              window.sessionStorage.setItem("token", data.token);
+              alert("Sucess!") //TODO: Delete this
+              navigate("/home")
+            }else{
+              alert("The email or password is incorrect! Try again.")
+            }
+          })
         })
     },
   });
@@ -64,6 +68,7 @@ function Login() {
           <Button variant="primary" type="submit">
             Submit
           </Button>
+
         </Form>
       </Card>
     </div>
