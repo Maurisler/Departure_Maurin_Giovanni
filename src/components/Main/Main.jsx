@@ -163,10 +163,9 @@ function Main() {
             <Card>
               <p><b>{t("from")}:</b> {connection.from}</p>
               <p><b>{t("to")}:</b> {connection.to}</p>
-              <Button variant='danger' onClick={() => deleteConnection(connection.id)}>{t("delete")}</Button>
               <Button className='buttons-main' variant='danger' onClick={() => deleteConnection(connection.id)}>{t("delete")}</Button>
               <Link to={`/connection/` + connection.id}>
-                <Button variant='primary'>{t("view")}</Button>
+                <Button className='buttons-main' variant='primary'>{t("view")}</Button>
               </Link>
             </Card>
           ))
