@@ -30,6 +30,7 @@ code {
   width: 100vw;
   height: 8em;
   background-color: lightgray;
+  justify-content: center;
 }
 
 #connection-page{
@@ -47,4 +48,8 @@ code {
 
 .field{
   background-color: lightgray !important;
+}
+
+.buttons-main{
+  width: 15%;
 }
