@@ -2,12 +2,9 @@ import './Login.test';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import i18next from 'i18next';
 
 function Login() {
   let navigate = useNavigate();
@@ -27,7 +24,6 @@ function Login() {
           response.json().then(data => {
             if(response.ok){
               window.sessionStorage.setItem("token", data.token);
-              alert("Sucess!") //TODO: Delete this
               navigate("/home")
             }else{
               alert("The email or password is incorrect! Try again.")

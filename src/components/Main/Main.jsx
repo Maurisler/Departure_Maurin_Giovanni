@@ -2,13 +2,9 @@ import './Main.test';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
 
 
 
@@ -22,9 +18,13 @@ function Main() {
 
   let token = useRef()
 
+  let navigate = useNavigate();
 
   useEffect(() => {
     token.current = window.sessionStorage.getItem("token");
+    if(token.current === null){
+      navigate("/");
+    }
     getConnections(); 
   },[])
 
@@ -51,7 +51,7 @@ function Main() {
         setConnections(d)
       });
     }else{
-      alert("Error")
+      //TODO:ERROR
     }
    });
   }
@@ -90,11 +90,11 @@ function Main() {
               try{
                 setFrom(fromRef.current.value = d.stations[0].name);
               }catch(error){
-                alert("Error")
+                //TODO:ERROR
               }      
             });
           }else{
-            alert("Error")
+            //TODO:ERROR
           }
       })
     },
@@ -114,10 +114,10 @@ function Main() {
               try{
                 setTo(toRef.current.value = d.stations[0].name);
               }catch(error){
-                alert("Error")
+                //TODO:ERROR
               }
             }else{
-              alert("Error")
+              //TODO:ERROR
             }
           });
         })
@@ -139,9 +139,6 @@ function Main() {
                 ref={fromRef}
                 onChange={(e) => setFrom(e.target.value)}
               />
-              <Form.Text id="passwordHelpBlock" muted>
-                Abfahrtsort
-              </Form.Text>
           </Form>
         </div>
         <Button variant="secondary" onClick={swapVal}>⇄</Button>
@@ -156,13 +153,11 @@ function Main() {
               ref={toRef}
               onChange={(e) => setTo(e.target.value)}
             />
-            <Form.Text id="passwordHelpBlock" muted>
-              Ankunftsort
-            </Form.Text>
           </Form>
         </div>
         <Button variant="secondary" onClick={submitConection}>Hinzufügen</Button>
       </div>
+      <h4>Verbindungen:</h4>
         {
           connections.map(connection => (
             <Card>

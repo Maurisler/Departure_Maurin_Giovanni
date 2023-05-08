@@ -1,18 +1,14 @@
 import './Connection.test';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import { Link ,useParams } from "react-router-dom";
-import { useFormik } from 'formik';
+import { useNavigate ,useParams } from "react-router-dom";
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 
 
 
 function Connection() {
+  const [spinner, setSpinner] = useState(false); 
+  let navigate = useNavigate();
   const connectionId = useParams().connectionId;
   let from;
   let to;
@@ -22,6 +18,9 @@ function Connection() {
 
   useEffect(() => {
     token.current = window.sessionStorage.getItem("token");
+    if(token.current === null){
+      navigate("/");
+    }
 
     getUserConnection(connectionId)
 
@@ -40,17 +39,14 @@ function Connection() {
    }).then(response =>{
     if(response.ok){
       return response.json();
-        //TODO: 404 page
       
     }else{
-      alert("Error")
+      //TODO:ERROR
     }
    }).then(d => {
     console.log(d)
     d.forEach(e => {
-      if(e.id == connectionId){
-        console.warn(e.id  + '   == ' + connectionId)
-        console.warn(e)
+      if(parseInt(e.id) === parseInt(connectionId)){
         from = e.from;
         to = e.to;
         return;
@@ -61,17 +57,21 @@ function Connection() {
   }
 
   async function getConnections(){
-      fetch('http://transport.opendata.ch/v1/connections?from="' + from + '"&to="' + to + '"&limit=5', { 
-          method: 'GET'
-      }).then(response =>{
-        if(response.ok){
-          response.json().then(d => {
-            setConnections(d.connections)
-          });
-        }else{
-          alert("Error")
-        }
-      });
+    if(from === undefined || to === undefined){
+      navigate("/errorpage")
+    }
+    fetch('http://transport.opendata.ch/v1/connections?from="' + from + '"&to="' + to + '"&limit=5', { 
+        method: 'GET'
+    }).then(response =>{
+      if(response.ok){
+        setSpinner(true)
+        response.json().then(d => {
+          setConnections(d.connections)
+        });
+      }else{
+        //TODO:ERROR
+      }
+    });
   }
 
   function getTimeDifference(timestamp) {
@@ -118,21 +118,26 @@ function Connection() {
   
   //TODO: Insert translation
   return (
-    <>
+    <div id='connection-page'>
       {
+        spinner ?
+        (
         //TODO: if first connection is tommorow, mark as next day only
         connections.map(connection => (
             <Card>
               <p><b>Von:</b> {connection.from.station.name}</p>
               <p><b>Zu:</b> {connection.to.station.name}</p>
               <p><b>Abfahrt in:</b> {getTimeDifference(connection.from.departure)}</p>
-              <p><b>Verspätung:</b> {connection.from.delay} Minuten</p>
-              <p><b>Status:</b> {connection.to.station.name}</p>
+              <p><b>Verspätung:</b> {connection.from.delay == null ? "Nicht bekannt" : (connection.from.delay + 'Minuten')}</p>
+              <p><b>Status:</b> {getTimeDifference(connection.from.departure) === "Der Zug ist abgefahren" ? "Abgefahren" : "Verfügbar"}</p>
               <p><b>Dauer:</b> {connection.to.platform}</p>
             </Card>
         ))
+        )
+        :
+        <Spinner animation="border" variant="primary" id='loading-element'/>
       }
-    </>
+    </div>
   );
 }
 

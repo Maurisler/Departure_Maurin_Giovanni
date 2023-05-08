@@ -32,6 +32,19 @@ code {
   background-color: lightgray;
 }
 
+#connection-page{
+  height: 100vh;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+#loading-element{
+  scale: 5;
+  justify-self: center;
+  align-self: center;
+}
+
 .field{
   background-color: lightgray !important;
 }
