@@ -29,7 +29,7 @@ const resources = {
       go_back: "Zurück zum Start",
 
       day: "Tag",
-      multiple_day_end:""
+      multiple_day_end:"e"
     },
 
   }
