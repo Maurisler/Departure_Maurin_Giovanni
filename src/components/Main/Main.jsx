@@ -155,18 +155,18 @@ function Main() {
             />
           </Form>
         </div>
-        <Button variant="secondary" onClick={submitConection}>Hinzufügen</Button>
+        <Button className='buttons-main' variant="secondary" onClick={submitConection}>Hinzufügen</Button>
       </div>
-      <h4>Verbindungen:</h4>
+      <h4>Gespeicherte Verbindungen:</h4>
         {
           connections.map(connection => (
             <Card>
               <p><b>Von:</b> {connection.from}</p>
               <p><b>Zu:</b> {connection.to}</p>
-              <Button variant='danger' onClick={() => deleteConnection(connection.id)}>Entfernen</Button>
               <Link to={`/connection/` + connection.id}>
-                <Button variant='primary'>Anschauen</Button>
+                <Button className='buttons-main' variant='primary'>Anschauen</Button>
               </Link>
+              <Button className='buttons-main' variant='danger' onClick={() => deleteConnection(connection.id)}>Entfernen</Button>
             </Card>
           ))
         }
