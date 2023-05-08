@@ -163,6 +163,7 @@ function Main() {
         </div>
         <Button variant="secondary" onClick={submitConection}>Hinzufügen</Button>
       </div>
+      <h4>Gespeicherte Verbindungen:</h4>
       <ul>
         {
           connections.map(connection => (
