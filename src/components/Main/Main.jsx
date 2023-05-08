@@ -38,18 +38,20 @@ function Main() {
       to: '',
     },
     onSubmit: values => {
-      fetch('http://localhost:4242/api/login', { 
+      fetch('http://transport.opendata.ch/v1/locations?query=' + values.to, { 
           method: 'POST', 
-          headers: {'Content-Type': 'application/json'}, 
-          body: JSON.stringify({ email: values.email, password: values.password }) 
         } )
         .then(response => {
           let data = response.json();
           if(response.ok){
-            sessionStorage.setItem("token", data.token);
-            alert("Sucess!") //TODO: Delete this
+            try{
+              values.to = data.stations[0].name;
+            }catch(error){
+              alert("Error")
+            }
+            
           }else{
-            alert("The email or password is incorrect! Try again.")
+            alert("Error")
           }
         })
     },
